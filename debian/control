@@ -1,0 +1,32 @@
+Source: mozilla-minos-settings
+Section: misc
+Priority: extra
+Maintainer: Javier P.L. <chilicuil@ubuntu.com>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.9.4
+Homepage: https://github.com/minos-org/mozilla-minos-settings
+Vcs-Git: git://github.com/minos-org/mozilla-minos-settings-deb.git
+Vcs-Browser: https://github.com/minos-org/mozilla-minos-settings-deb.git
+
+Package: mozilla-minos-settings
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, debconf
+Description: Firefox default minos settings
+ This package contain the default firefox settings for minos, some of them are:
+ - Default homepage: https://minos.io/find
+ - Default theme: nasa
+ - Default plugins: adblock plus, chmfox, epubreader, firebug, ghostery,
+   greasemonkey, lazarous, livehttp headers, noscript, pixlr grabber,
+   text link, resurrect pages, tab counter, tabsearch, useragent agent,
+   vimkeybindings, youtube mp3
+ - Minimal layout
+ Other plugins/settings may be added in the future, see
+ https://github.com/minos-org/mozilla-minos-settings for more details.
+ .
+ The above settings are sync from /usr/share/minos/mozilla to every user $HOME
+ directory in the configuration phase (creating backups in the process), that
+ happens on every update of this package. It can also be manually triggered by
+ running:
+ $ dpkg-reconfigure mozilla-minos-settings
+ .
+ If a $HOME/.minos/not_override file exists the package will skip that user.

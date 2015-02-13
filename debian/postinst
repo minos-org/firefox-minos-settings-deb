@@ -1,0 +1,40 @@
+#!/bin/sh
+set -e
+
+case "${1}" in
+    configure)
+        users="$(getent passwd | awk -F: '{if ($3 >= 1000 && $3 < 60000) print $1}')"
+        for user in ${users}; do
+            su "${user}" -c "test -f \"${HOME}\"/.minos/not_override" && \
+                printf "%s\\n" "mozilla-minos-settings: skipping $user's directory since ${HOME}/.minos/not_override exist" && \
+                exit 0
+            su "${user}" -c "rm -rf /tmp/mozilla-${user}"
+            su "${user}" -c "cp -r /usr/share/minos/mozilla /tmp/mozilla-${user}"
+            su "${user}" -c "find /tmp/mozilla-${user} -type f | xargs sed -i -e \"s/muser/${user}/g\""
+            if su "${user}" -c "test -d \"${HOME}\"/.mozilla"; then
+                dist_size="$(su "${user}" -c "du -s /tmp/mozilla-${user}/firefox/*.default"|cut -f1)"
+                user_size="$(su "${user}" -c "du -s \"${HOME}\"/.mozilla/firefox/*.default"|cut -f1)"
+                if [ X"${dist_size}" = X"${user_size}" ]; then
+                    su "${user}" -c "rm -rf /tmp/mozilla-${user}"
+                    exit 0
+                else
+                    printf "%s\\n" "mozilla-minos-settings: $user's mozilla directory found, creating backup to ${HOME}/.mozilla.minos-orig.$(date +"%d-%m-%Y-[%H:%M]")"
+                    su "${user}" -c "mv \"${HOME}\"/.mozilla \"${HOME}\"/.mozilla.minos-orig.$(date +"%d-%m-%Y-[%H:%M]")"
+                    su "${user}" -c "mv /tmp/mozilla-${user} \"${HOME}\"/.mozilla"
+                fi
+            else
+                su "${user}" -c "mv /tmp/mozilla-${user} \"${HOME}\"/.mozilla"
+            fi
+            printf "%s\\n" "mozilla-minos-settings: setting up $user's mozilla default settings"
+        done
+        ;;
+    abort-upgrade|abort-deconfigure|abort-remove)
+        ;;
+    *)
+        printf "%s\\n" "${0} called with unknown argument \`${1}'" 1>&2
+        exit 1
+        ;;
+esac
+
+#DEBHELPER#
+exit 0
