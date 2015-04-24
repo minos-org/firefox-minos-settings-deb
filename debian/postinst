@@ -7,7 +7,8 @@ case "${1}" in
         for user in ${users}; do
             su "${user}" -c "test -f \"${HOME}\"/.minos/not_override" && \
                 printf "%s\\n" "mozilla-minos-settings: skipping $user's directory since ${HOME}/.minos/not_override exist" && \
-                exit 0
+                continue
+            printf "%s\\n" "mozilla-minos-settings: setting up $user's mozilla default settings"
             su "${user}" -c "rm -rf /tmp/mozilla-${user}"
             su "${user}" -c "cp -r /usr/share/minos/mozilla /tmp/mozilla-${user}"
             su "${user}" -c "find /tmp/mozilla-${user} -type f | xargs sed -i -e \"s/muser/${user}/g\""
@@ -16,7 +17,7 @@ case "${1}" in
                 user_size="$(su "${user}" -c "du -s \"${HOME}\"/.mozilla/firefox/*.default"|cut -f1)"
                 if [ X"${dist_size}" = X"${user_size}" ]; then
                     su "${user}" -c "rm -rf /tmp/mozilla-${user}"
-                    exit 0
+                    continue
                 else
                     printf "%s\\n" "mozilla-minos-settings: $user's mozilla directory found, creating backup to ${HOME}/.mozilla.minos-orig.$(date +"%d-%m-%Y-[%H:%M]")"
                     su "${user}" -c "mv \"${HOME}\"/.mozilla \"${HOME}\"/.mozilla.minos-orig.$(date +"%d-%m-%Y-[%H:%M]")"
@@ -25,7 +26,6 @@ case "${1}" in
             else
                 su "${user}" -c "mv /tmp/mozilla-${user} \"${HOME}\"/.mozilla"
             fi
-            printf "%s\\n" "mozilla-minos-settings: setting up $user's mozilla default settings"
         done
         ;;
     abort-upgrade|abort-deconfigure|abort-remove)
