@@ -6,11 +6,11 @@ case "${1}" in
         users="$(getent passwd | awk -F: '{if ($3 >= 1000 && $3 < 60000) print $1}')"
         for user in ${users}; do
             su "${user}" -c "test -f \"${HOME}\"/.minos/not_override" && \
-                printf "%s\\n" "mozilla-minos-settings: skipping $user's directory since ${HOME}/.minos/not_override exist" && \
+                printf "%s\\n" "firefox27-minos-settings: skipping $user's directory since ${HOME}/.minos/not_override exist" && \
                 continue
-            printf "%s\\n" "mozilla-minos-settings: setting up $user's mozilla default settings"
+            printf "%s\\n" "firefox27-minos-settings: setting up $user's mozilla default settings"
             su "${user}" -c "rm -rf /tmp/mozilla-${user}"
-            su "${user}" -c "cp -r /usr/share/minos/mozilla /tmp/mozilla-${user}"
+            su "${user}" -c "cp -r /usr/share/minos/firefox27 /tmp/mozilla-${user}"
             su "${user}" -c "find /tmp/mozilla-${user} -type f | xargs sed -i -e \"s/muser/${user}/g\""
             if su "${user}" -c "test -d \"${HOME}\"/.mozilla"; then
                 dist_size="$(su "${user}" -c "du -s /tmp/mozilla-${user}/firefox/*.default"|cut -f1)"
@@ -19,7 +19,7 @@ case "${1}" in
                     su "${user}" -c "rm -rf /tmp/mozilla-${user}"
                     continue
                 else
-                    printf "%s\\n" "mozilla-minos-settings: $user's mozilla directory found, creating backup to ${HOME}/.mozilla.minos-orig.$(date +"%d-%m-%Y-[%H:%M]")"
+                    printf "%s\\n" "firefox27-minos-settings: $user's mozilla directory found, creating backup to ${HOME}/.mozilla.minos-orig.$(date +"%d-%m-%Y-[%H:%M]")"
                     su "${user}" -c "mv \"${HOME}\"/.mozilla \"${HOME}\"/.mozilla.minos-orig.$(date +"%d-%m-%Y-[%H:%M]")"
                     su "${user}" -c "mv /tmp/mozilla-${user} \"${HOME}\"/.mozilla"
                 fi

@@ -10,8 +10,8 @@ case "${1}" in
     #The config script is run before the package is unpacked.
     reconfigure)
         #workaround for the hacky way of managing configure/reconfigure in maintainer scripts/debconf
-        if [ -f /var/lib/dpkg/info/mozilla-minos-settings.postinst ]; then
-            /var/lib/dpkg/info/mozilla-minos-settings.postinst configure
+        if [ -f /var/lib/dpkg/info/firefox27-minos-settings.postinst ]; then
+            /var/lib/dpkg/info/firefox27-minos-settings.postinst configure
             true
         fi
         ;;

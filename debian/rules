@@ -19,10 +19,10 @@ export DH_VERBOSE=1
 
 get-orig-source:
 	rm -rf debian/tmp; mkdir debian/tmp
-	cd debian/tmp; wget https://github.com/minos-org/mozilla-minos-settings/archive/${DEB_MASTER_VERSION}.tar.gz
+	cd debian/tmp; wget https://github.com/minos-org/firefox-minos-settings/archive/${DEB_MASTER_VERSION}.tar.gz
 	cd debian/tmp; tar xvzf ${DEB_MASTER_VERSION}.tar.gz
-	cd debian/tmp; mv mozilla-minos-settings-* mozilla-minos-settings-${DEB_UPSTREAM_VERSION}
-	cd debian/tmp; tar cvJf mozilla-minos-settings_${DEB_UPSTREAM_VERSION}.orig.tar.xz mozilla-minos-settings-${DEB_UPSTREAM_VERSION}
-	mv debian/tmp/mozilla-minos-settings_${DEB_UPSTREAM_VERSION}.orig.tar.xz .
-	mv debian/tmp/mozilla-minos-settings-${DEB_UPSTREAM_VERSION} .
+	cd debian/tmp; mv firefox-minos-settings-* firefox27-minos-settings-${DEB_UPSTREAM_VERSION}
+	cd debian/tmp; tar cvJf firefox27-minos-settings_${DEB_UPSTREAM_VERSION}.orig.tar.xz firefox27-minos-settings-${DEB_UPSTREAM_VERSION}
+	mv debian/tmp/firefox27-minos-settings_${DEB_UPSTREAM_VERSION}.orig.tar.xz .
+	mv debian/tmp/firefox27-minos-settings-${DEB_UPSTREAM_VERSION} .
 	rm -rf debian/tmp
