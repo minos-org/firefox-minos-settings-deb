@@ -1,12 +1,12 @@
-Source: firefox27-minos-settings
+Source: firefox-minos-settings
 Section: misc
 Priority: extra
 Maintainer: Javier P.L. <chilicuil@ubuntu.com>
 Build-Depends: debhelper (>= 7)
 Standards-Version: 3.9.4
 Homepage: https://github.com/minos-org/firefox-minos-settings
-Vcs-Git: git://github.com/minos-org/firefox27-minos-settings-deb.git
-Vcs-Browser: https://github.com/minos-org/firefox27-minos-settings-deb.git
+Vcs-Git: git://github.com/minos-org/firefox-minos-settings-deb.git
+Vcs-Browser: https://github.com/minos-org/firefox-minos-settings-deb.git
 
 Package: firefox27-minos-settings
 Architecture: all
@@ -28,5 +28,28 @@ Description: Firefox 27 default minos settings
  happens on every update of this package. It can also be manually triggered by
  running:
  $ dpkg-reconfigure firefox27-minos-settings
+ .
+ If a $HOME/.minos/not_override file exists the package will skip that user.
+
+Package: firefox28-minos-settings
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, debconf
+Description: Firefox 28 default minos settings
+ This package contain the default Firefox 28 settings for minos, some of them are:
+ - Default homepage: https://minos.io/find
+ - Default theme: nasa
+ - Default plugins: adblock plus, chmfox, epubreader, firebug, ghostery,
+   greasemonkey, lazarous, livehttp headers, noscript, pixlr grabber,
+   text link, resurrect pages, tab counter, tabsearch, useragent agent,
+   vimkeybindings, youtube mp3
+ - Minimal layout
+ Other plugins/settings may be added in the future, see
+ https://github.com/minos-org/firefox-minos-settings for more details.
+ .
+ The above settings are sync from /usr/share/minos/firefox28 to every user $HOME
+ directory in the configuration phase (creating backups in the process), that
+ happens on every update of this package. It can also be manually triggered by
+ running:
+ $ dpkg-reconfigure firefox28-minos-settings
  .
  If a $HOME/.minos/not_override file exists the package will skip that user.

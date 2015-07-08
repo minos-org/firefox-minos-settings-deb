@@ -21,8 +21,8 @@ get-orig-source:
 	rm -rf debian/tmp; mkdir debian/tmp
 	cd debian/tmp; wget https://github.com/minos-org/firefox-minos-settings/archive/${DEB_MASTER_VERSION}.tar.gz
 	cd debian/tmp; tar xvzf ${DEB_MASTER_VERSION}.tar.gz
-	cd debian/tmp; mv firefox-minos-settings-* firefox27-minos-settings-${DEB_UPSTREAM_VERSION}
-	cd debian/tmp; tar cvJf firefox27-minos-settings_${DEB_UPSTREAM_VERSION}.orig.tar.xz firefox27-minos-settings-${DEB_UPSTREAM_VERSION}
-	mv debian/tmp/firefox27-minos-settings_${DEB_UPSTREAM_VERSION}.orig.tar.xz .
-	mv debian/tmp/firefox27-minos-settings-${DEB_UPSTREAM_VERSION} .
+	cd debian/tmp; mv firefox-minos-settings-* firefox-minos-settings-${DEB_UPSTREAM_VERSION}
+	cd debian/tmp; tar cvJf firefox-minos-settings_${DEB_UPSTREAM_VERSION}.orig.tar.xz firefox-minos-settings-${DEB_UPSTREAM_VERSION}
+	mv debian/tmp/firefox-minos-settings_${DEB_UPSTREAM_VERSION}.orig.tar.xz .
+	mv debian/tmp/firefox-minos-settings-${DEB_UPSTREAM_VERSION} .
 	rm -rf debian/tmp

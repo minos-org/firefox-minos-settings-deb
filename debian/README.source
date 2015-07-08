@@ -1,15 +1,15 @@
-Debian packaging for firefox27-minos-settings
----------------------------------------------
+Debian packaging for firefox-minos-settings
+-------------------------------------------
 
 Steps to build this package:
 
 ```
-$ git clone --dept=1 https://github.com/minos-org/firefox27-minos-settings-deb
-$ cd firefox27-minos-settings-deb
+$ git clone --dept=1 https://github.com/minos-org/firefox-minos-settings-deb
+$ cd firefox-minos-settings-deb
 $ dch -i #insert proper upstream version (1:$(date +%Y%m%d%H%M)+git7digitsHash-minos)
 $ debian/rules get-orig-source
-$ mv debian firefox27-minos-settings-*
-$ cd firefox27-minos-settings-*
+$ mv debian firefox-minos-settings-*
+$ cd firefox-minos-settings-*
 
 [ Optional, make some adaptations, like updating debian/patches, if needed ]
 [ document additional changes if required, $EDITOR debian/changelog ]
