@@ -1,30 +1,39 @@
 #!/bin/sh
 set -e
 
+#close stdout
+#exec 1<&-
+##close stderr
+#exec 2<&-
+##open stdout as $log_file file for read and write.
+#exec 1<> "/tmp/minos-core-settings.${$}.debug"
+##redirect stderr to stdout
+#exec 2>&1
+#set -x #enable trace mode
+
+users="$(busybox cat /etc/passwd | busybox awk -F: '{if ($3 >= 1000 && $3 < 60000) print $1}')"
+
 case "${1}" in
     configure)
-        users="$(getent passwd | awk -F: '{if ($3 >= 1000 && $3 < 60000) print $1}')"
         for user in ${users}; do
-            su "${user}" -c "test -f \"${HOME}\"/.minos/not_override" && \
-                printf "%s\\n" "firefox28-minos-settings: skipping $user's directory since ${HOME}/.minos/not_override exist" && \
-                continue
+            su "${user}" -c "test -f ~/.minos/not_override" && continue
             printf "%s\\n" "firefox28-minos-settings: setting up $user's mozilla default settings"
             su "${user}" -c "rm -rf /tmp/mozilla-${user}"
-            su "${user}" -c "cp -r /usr/share/minos/firefox28 /tmp/mozilla-${user}"
+            su "${user}" -c "cp -r  /usr/share/minos/firefox28 /tmp/mozilla-${user}"
             su "${user}" -c "find /tmp/mozilla-${user} -type f | xargs sed -i -e \"s/muser/${user}/g\""
-            if su "${user}" -c "test -d \"${HOME}\"/.mozilla"; then
+            if su "${user}" -c "test -d ~/.mozilla"; then
                 dist_size="$(su "${user}" -c "du -s /tmp/mozilla-${user}/firefox/*.default"|cut -f1)"
-                user_size="$(su "${user}" -c "du -s \"${HOME}\"/.mozilla/firefox/*.default"|cut -f1)"
+                user_size="$(su "${user}" -c "du -s ~/.mozilla/firefox/*.default"|cut -f1)"
                 if [ X"${dist_size}" = X"${user_size}" ]; then
                     su "${user}" -c "rm -rf /tmp/mozilla-${user}"
                     continue
                 else
-                    printf "%s\\n" "firefox28-minos-settings: $user's mozilla directory found, creating backup to ${HOME}/.mozilla.minos-orig.$(date +"%d-%m-%Y-[%H:%M]")"
-                    su "${user}" -c "mv \"${HOME}\"/.mozilla \"${HOME}\"/.mozilla.minos-orig.$(date +"%d-%m-%Y-[%H:%M]")"
-                    su "${user}" -c "mv /tmp/mozilla-${user} \"${HOME}\"/.mozilla"
+                    printf "%s\\n" "firefox28-minos-settings: $user's mozilla directory found, creating backup to ~/.mozilla.minos-orig.$(date +"%d-%m-%Y-[%H:%M]")"
+                    su "${user}" -c "mv ~/.mozilla ~/.mozilla.minos-orig.$(date +"%d-%m-%Y-[%H:%M]")"
+                    su "${user}" -c "mv /tmp/mozilla-${user} ~/.mozilla"
                 fi
             else
-                su "${user}" -c "mv /tmp/mozilla-${user} \"${HOME}\"/.mozilla"
+                su "${user}" -c "mv /tmp/mozilla-${user} ~/.mozilla"
             fi
         done
         ;;
